@@ -51,5 +51,78 @@ class Tree:
         """ return True if this tree is empty"""
         return len(self) == None
 
+    def depth(self, p):
+        """return the number of levels separating position p from the root"""
+        if self.is_root(p):
+            return 0
+        else:
+            return 1 + self.depth(self.parent(p))
+
+    def _height1(self):
+        """return the height of the tree."""
+        return max(self.depth(p) for p in self.positions() if self.is_leaf(p))
+
+    def _height2(self, p):
+        """ return height of subtree rooted at Position p """
+        if self.is_leaf(p):
+            return 0
+        else:
+            return 1 + max(self._height2(c) for c in self.children(p))
+
+    def height(self, p=None):
+        """
+        Return the height of the subtree rooted at Position p
+        If p is None, return the height of the entire tree
+        """
+        if p is None:
+            p = self.root()
+        return self._height2(p) # start _height2 recursion
+
+class BinaryTree(Tree):
+    """Abstract base class representing a binary tree structure."""
+
+    #---additional abstract methods ---
+    def left(self, p):
+        """ return a position representing p's left child
+        return None if p does not have a left child
+        """
+        raise NotImplementedError('must be implemented by subclass')
+
+    def right(self, p):
+        """ return a position representing p's right child
+        return None if p does not have a right child
+        """
+        raise NotImplementedError('must be implemented by subclass')
+
+    def sibling(self, p):
+        """ return a Position representing p's sibling (or None if no Sibling)"""
+        parent = self.parent(p)
+        if parent is None:
+            return None
+        else:
+            if p == self.left(parent):
+                return self.right(parent) # possibly None
+            else:
+                return self.left(parent) # possibly None
+
+    def children(self, p):
+        """ generate an interation of Positions representing p's children """
+        if self.left(p) is not None:
+            yield self.left(p)
+        if self.right(p) is not None:
+            yield self.right(p)
+
+
+class LinkedBinaryTree(BinaryTree):
+    """ Linked representation of a binary tree structure """
+
+
+
+
+
+
+
+
+
 
 
