@@ -113,11 +113,6 @@ class BinaryTree(Tree):
             yield self.right(p)
 
 
-class LinkedBinaryTree(BinaryTree):
-    """ Linked representation of a binary tree structure """
-
-
-
 
 
 
